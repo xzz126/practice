@@ -8,3 +8,9 @@ message(STATUS ${rclcpp_LIBRARIES}) #库文件路径
 
 target_include_directories(ros2_cpp_node PUBLIC ${rclcpp_INCLUDE_DIRS}) #头文件包含
 target_link_libraries(ros2_cpp_node ${rclcpp_LIBRARIES})  #库文件链接
+
+
+写在功能包的CMakeLists里用
+add_executable(ros2_cpp_node ros2_cpp_node.cpp)
+find_package(rclcpp REQUIRED)
+ament_target_dependencies(ros2_cpp_node rclcpp)
