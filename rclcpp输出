@@ -9,3 +9,13 @@ int main(int argc,char**argv)
     rclcpp::shutdown();//关闭
     return 0;
 }
+p1.use_count()和p1.get()   引用计数和内存地址 
+p1.reset(); //释放内存
+
+std::make_shared<数据类型/类>(参数);     //创造节点
+
+[变量](参数) -> 返回类型 {};             //lambda函数
+
+std::function<void(const std::string&)>save1=save01;
+std::function<void(const std::string&)>save3=save03;        /自由和lambda函数                                   
+std::function<void(const std::string&)>save2=std::bind(&funcsave::save02,&funcsave01,std::placeholders::_1);  类函数名 变量名 记就行了      //成员函数放入包装器
