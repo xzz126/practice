@@ -375,3 +375,460 @@ int main()
 	cat cat;
 	dospeak(cat);
 }
+/* 纯虚函数和抽象类
+#include<iostream>
+using namespace std;
+
+class Base
+{
+public:
+	virtual void func() = 0;
+};
+
+class Son :public Base
+{
+public :
+	virtual void func()
+	{
+		cout << "你是给吧" << endl;
+	}
+	/*Son(int a)
+	{
+		this->m_A = a;
+	}
+	int m_A;
+};
+
+int main()
+{
+	//Son s(20);
+	Base* base = new Son;
+	base->func();
+	//s.func();
+	return 0;
+}*/
+/*
+#include<iostream>
+using namespace std;
+
+class Animal
+{
+public:
+	Animal()
+	{
+		cout << "a" << endl;
+	}
+	//virtual ~Animal()
+	//{
+	//	cout << "b" << endl;
+	//}
+	virtual ~Animal() = 0;
+	virtual void speak() = 0;
+};
+Animal:: ~Animal()
+{
+	cout << "b" << endl;
+}
+class Cat :public Animal
+{
+public:
+	virtual void speak()
+	{
+		cout << "小猫在说话" << endl;
+	}
+	Cat(string name)
+	{
+		m_name=new string(name);
+		cout << 1 << endl;
+	}
+	~Cat()
+	{
+		if (m_name != NULL)
+		{
+			cout << 2 << endl;
+			delete m_name;
+			m_name = NULL;
+		}
+	}
+
+	string* m_name;
+};
+
+int main()
+{
+	Animal* animal = new Cat("Tom");
+	animal->speak();
+	delete animal;
+
+}*/
+/*模板
+#include<iostream>
+using namespace std;
+
+template<class T>
+T myswap(T a, T b)
+{
+	//T temp = a;
+	return a + b;
+	//b = temp;
+}
+
+int main()
+{
+	int a = 10;
+	int b = 20;
+	char c = 's';
+	cout << myswap<int>(a, c) << endl;
+}*/
+/*模板具体化实现
+#include<iostream>
+using namespace std;
+#include<string>
+
+class Person
+{
+public:
+	Person(string name, int age)
+	{
+		this->m_name = name;
+		this->m_age = age;
+	}
+	string m_name;
+	int m_age;
+};
+
+template<class T>
+bool mycompare(T a, T b)
+{
+	if (a == b)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+template<>
+bool mycompare(Person& a, Person &b)
+{
+	if (a.m_name==b.m_name&&a.m_age==b.m_age)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+int main()
+{
+	Person p1("yi", 20);
+	Person p2("er", 26);
+
+	
+	bool ret = mycompare(p1, p2);
+	cout << ret << endl;
+
+	return 0;
+}*/
+/*类模板
+#include<iostream>
+using namespace std;
+#include<string>
+
+template<class T1,class T2>
+class father
+{public:
+	father(T1 a,T2 b)
+	{
+		m_name = a;
+		m_age = b;
+		cout << m_name << "   " << m_age << endl;
+	}
+
+	T1 m_name;
+	T2 m_age;
+};
+
+int main()
+{
+	string a = "your father";
+	int b = 18;
+	father<string, int>father(a, b);
+}
+*/
+/*类模板对象做函数参数
+#include<iostream>
+using namespace std;
+
+template<class T1>
+class Person
+{
+public:
+	T1 age;
+	
+	Person(T1 a)
+	{
+		age = a;
+	}
+	void show()
+	{
+		cout << age << endl;
+	}
+};
+
+void print(Person<int>& p)
+{
+	p.show();
+}
+
+template<class T1>
+void print02(Person<T1>& p)
+{
+	p.show();
+}
+
+template<class T1>
+void print03(T1& p)
+{
+	p.show();
+}
+
+int main()
+{
+	Person<int>p1(18);
+	print(p1);
+	print02(p1);
+	print03(p1);
+	return 0;
+}*/
+
+/*类模板和继承
+#include<iostream>
+using namespace std;
+#include<string>
+
+template<class T1>
+class father
+{
+public:
+	T1 name;
+};
+template<class T1>
+class son :public father<T1>
+{
+public:
+	void print(T1 a)
+	{
+		this->name = a;
+		cout << this->name << endl;
+	}
+};
+void test01()
+{
+	string b = "geiba";
+	son<string> a;
+	a.print(b);
+}
+int main()
+{
+	test01();
+	return 0;
+}*/
+/*类模板成员函数类外实现
+#include<iostream>
+using namespace std;
+#include<string>
+
+template<class T1,class T2>
+class Person
+{
+public:
+	Person(T1 a, T2 b);
+	void print();
+	T1 age;
+	T2 name;
+};
+template<class T1,class T2>
+Person<T1, T2>::Person(T1 a, T2 b)
+{
+	this->age = a;
+	this->name = b;
+}
+template<class T1,class T2>
+void Person<T1, T2>::print()
+{
+	cout << name << "  " << age;
+}
+
+int main()
+{
+	Person<int, string>p(18, "laodou");
+	p.print();
+
+}*/
+/*类模板和友元
+#include<iostream>
+using namespace std;
+
+template<class T>
+class Person;//类声明
+template<class T>
+void print(Person<T>& p);//函数声明
+template<class T>
+class Person
+{
+	T age;
+public:
+	Person(T a)
+	{
+		this->age = a;
+	}
+	friend void print<T>(Person<T>& p);
+    {
+		cout << p.age << endl;
+	}
+};
+template<class T>
+void print(Person<T>& p)
+{
+	cout << p.age << endl;
+}
+
+int main()
+{
+	Person<int>p(18);
+	print(p);
+	return 0;
+}*/
+
+/*类模板分文件编写
+#include<iostream>
+using namespace std;
+#include"test.hpp"
+
+template<class T>
+class Person
+{
+public:
+	Person(T a)
+	{
+		this->age = a;
+	}
+	
+	T age;
+};
+template<class T>
+void test(Person<T>&p)
+{
+	cout << p.age <<endl;
+}
+
+int main()
+{
+	Person<int>p(18);
+	test(p);
+}*/
+/*vector存放内置数据类型和遍历
+#include<iostream>
+using namespace std;
+#include<vector>
+#include<algorithm>
+
+void print(int val)
+{
+	cout << val << endl;
+}
+
+void test01()
+{
+	vector<int>v;
+	v.push_back(10);
+	v.push_back(20);
+	v.push_back(30);
+	v.push_back(40);
+	v.push_back(50);
+	for (vector<int>::iterator it=v.begin();it!=v.end();it++)
+	{
+		cout << *it << endl;
+	}
+
+	for_each(v.begin(), v.end(), print);
+}
+
+
+
+int main()
+{
+	test01();
+
+	return 0;
+}
+*/
+/*存放自定义数组
+#include<iostream>
+using namespace std;
+#include<vector>
+#include<string>
+class Person
+{public:
+	Person(string name, int age)
+	{
+		m_name = name;
+		m_age = age;
+	}
+	string m_name;
+	int m_age;
+};
+void test01()
+{
+	vector<Person>v;
+	Person p1("aaa", 10);
+	Person p2("bbb", 20);
+	Person p3("ccc", 30);
+	Person p4("ddd", 40);
+	Person p5("eee", 50);
+
+	v.push_back(p1);
+	v.push_back(p2);
+	v.push_back(p3);
+	v.push_back(p4);
+	v.push_back(p5);
+
+	for (vector<Person>::iterator it = v.begin();it != v.end();it++)
+	{
+		cout<<(*it).m_name<<"   "<<(*it).m_age << endl;
+	}
+}
+
+void test02()
+{
+	vector<Person*>v1;
+
+	Person p1("aaa", 10);
+	Person p2("bbb", 20);
+	Person p3("ccc", 30);
+	Person p4("ddd", 40);
+	Person p5("eee", 50);
+
+	v1.push_back(&p1);
+	v1.push_back(&p2);
+	v1.push_back(&p3);
+	v1.push_back(&p4);
+	v1.push_back(&p5);
+
+	for (vector<Person*>::iterator vit = v1.begin();vit != v1.end();vit++)
+	{
+		cout << (**vit).m_name << "   " << (**vit).m_age << endl;
+	}
+
+}
+
+int main()
+{
+	test01();
+	test02();
+
+	return 0;
+}*/
