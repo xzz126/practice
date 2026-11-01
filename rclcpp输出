@@ -12,6 +12,8 @@ int main(int argc,char**argv)
 p1.use_count()和p1.get()   引用计数和内存地址 
 p1.reset(); //释放内存
 
+g++ sudu.cpp -o sudu //c++执行
+
 std::make_shared<数据类型/类>(参数);     //创造节点
 
 [变量](参数) -> 返回类型 {};             //lambda函数
