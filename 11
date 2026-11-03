@@ -1,0 +1,10 @@
+// 1.函数声明（写在外面，全局）
+void checkSpeedChange(int currentSpeed, int previousSpeed)
+{
+    int delta = absoluteDifference(currentSpeed, previousSpeed);
+    // 输出 WARNING / NORMAL
+}
+
+// 2.处理的时候创建线程 + join
+std::thread t(checkSpeedChange, curr, last_v);
+t.join();
