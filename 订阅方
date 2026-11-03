@@ -14,10 +14,10 @@ class Listener:public rclcpp::Node
         
     }
     private:
-    void do_cb(const std_msgs::msg::String&msg)
+    void do_cb(const std_msgs::msg::String::SharedPtr msg)
     {
         //解析并输出数据
-        RCLCPP_INFO(this->get_logger(),"订阅的消息是：%s",msg.data.c_str());
+        RCLCPP_INFO(this->get_logger(),"订阅的消息是：%s",msg->data.c_str());
     }
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
 
