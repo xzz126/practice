@@ -8,3 +8,37 @@ void checkSpeedChange(int currentSpeed, int previousSpeed)
 // 2.处理的时候创建线程 + join
 std::thread t(checkSpeedChange, curr, last_v);
 t.join();
+
+
+
+
+template<typename T>
+T absoluteDifference(T a, T b)
+{
+    return std::abs(a - b);
+}
+
+// 题目规定的函数，子线程执行
+void checkSpeedChange(int currentSpeed, int previousSpeed)
+{
+    int delta = absoluteDifference(currentSpeed, previousSpeed);
+    auto logger = rclcpp::get_logger("worker");
+    RCLCPP_INFO(logger, "Processing Speed: %d", currentSpeed);
+    RCLCPP_INFO(logger, "Previous Speed: %d", previousSpeed);
+    RCLCPP_INFO(logger, "Speed Difference: %d", delta);
+    RCLCPP_INFO(logger, "State: %s", delta >= 3 ? "WARNING" : "NORMAL");
+}
+
+// 回调内任务三代码
+std::thread t(checkSpeedChange, curr, last_v);
+t.join();
+
+// 统计部分留在主线程（题目要求原有统计正常跑）
+int delta = absoluteDifference(curr, last_v);
+vec.push_back(delta);
+if(vec.size() > 4) vec.erase(vec.begin());
+int cnt = 0;
+for(auto x : vec) if(x >= 3) cnt++;
+RCLCPP_INFO(this->get_logger(), "System State: %s", cnt>=2 ? "UNSTABLE" : "STABLE");
+
+last_v = curr;
