@@ -19,4 +19,35 @@ std::make_shared<数据类型/类>(参数);     //创造节点
 std::function<void(const std::string&)>save1=save01;
 std::function<void(const std::string&)>save3=save03;        /自由和lambda函数                                   
 std::function<void(const std::string&)>save2=std::bind(&funcsave::save02,&funcsave01,std::placeholders::_1);  类函数名 变量名 记就行了   
-//成员函数放入包装器
+//成员函数放入包装器   头文件#include"functional"
+void save01(const std::string&name)
+{
+    std::cout<<"自由函数"<<name<<std::endl;
+}
+
+class funcsave
+{
+private:
+
+public:
+funcsave()=default;
+~funcsave()=default;
+
+//成员函数
+void save02(const std::string&name)
+{
+    std::cout<<"成员函数"<<name<<std::endl;
+}
+ 
+};
+
+int main()
+{
+    funcsave funcsave01;
+
+    //lambda函数
+    auto save03=[](const std::string&name) -> void
+    {
+        std::cout<<"lambda函数"<<name<<std::endl;
+    };
+
