@@ -1,0 +1,373 @@
+//vector容器
+void printVector(vector<int> &v)
+{
+    for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
+    {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
+void test_vector01()
+{
+    vector<int> v1;
+    for (int i = 0; i < 5; i++)
+    {
+        v1.push_back(i);
+    }
+    printVector(v1); // 0 1 2 3 4
+
+    // 随机访问
+    cout << "v1[2] = " << v1[2] << endl;
+    cout << "v1.at(2) = " << v1.at(2) << endl;
+
+    // 头尾元素
+    cout << "front = " << v1.front() << endl;
+    cout << "back = " << v1.back() << endl;
+
+    // 删除
+    v1.pop_back();
+    printVector(v1);
+
+    // 中间插入（效率低！考点）
+    v1.insert(v1.begin() + 2, 100);
+    printVector(v1);
+
+    // 预留空间优化
+    vector<int> v2;
+    v2.reserve(10000); // 提前预留，减少扩容
+    cout << "v2 capacity = " << v2.capacity() << endl;
+}
+
+class Person
+{
+public:
+    Person(string name, int age)
+    {
+        mName = name;
+        mAge = age;
+    }
+    string mName;
+    int mAge;
+};
+
+void test_vector_person()
+{
+    vector<Person> v;
+    Person p1("刘备", 35);
+    Person p2("曹操", 45);
+    Person p3("孙权", 40);
+    v.push_back(p1);
+    v.push_back(p2);
+    v.push_back(p3);
+
+    for (vector<Person>::iterator it = v.begin(); it != v.end(); it++)
+    {
+        cout << "姓名：" << it->mName << " 年龄：" << it->mAge << endl;
+    }
+}
+
+   
+//deque容器
+void printDeque(const deque<int> &d)
+{
+    for (deque<int>::const_iterator it = d.begin(); it != d.end(); it++)
+    {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
+void test_deque()
+{
+    deque<int> d;
+    // 尾插
+    d.push_back(10);
+    d.push_back(20);
+    // 头插（deque强项！vector头插很慢）
+    d.push_front(100);
+    d.push_front(200);
+    printDeque(d);
+
+    // 头删、尾删
+    d.pop_front();
+    d.pop_back();
+    printDeque(d);
+
+    // 排序
+    sort(d.begin(), d.end());
+    printDeque(d);
+}
+
+
+//list容器
+void printList(const list<int> &L)
+{
+    for (list<int>::const_iterator it = L.begin(); it != L.end(); it++)
+    {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
+void test_list01()
+{
+    list<int> L;
+    L.push_back(10);
+    L.push_back(20);
+    L.push_front(100);
+    printList(L);
+
+    // ✅ 插入删除很快
+    list<int>::iterator it = L.begin();
+    it++;
+    L.insert(it, 500);//在it元素前插入新元素
+    printList(L);
+
+    L.erase(it);
+    printList(L);
+
+    L.reverse(); // 反转
+    printList(L);
+    L.sort(); // list自己的排序
+    printList(L);
+
+    // ❌ 错误写法！list不能[]访问
+    // cout << L[0] << endl;
+}
+
+class Person2
+{
+public:
+    Person2(string name, int age, int height)
+    {
+        mName = name;
+        mAge = age;
+        mHeight = height;
+    }
+    string mName;
+    int mAge;
+    int mHeight;
+};
+
+bool ComparePerson(Person2 &p1, Person2 &p2)
+{
+    if (p1.mAge == p2.mAge)
+    {
+        return p1.mHeight > p2.mHeight;
+    }
+    else
+    {
+        return p1.mAge < p2.mAge;
+    }
+}
+
+void test_list_person_sort()
+{
+    list<Person2> L;
+    L.push_back(Person2("刘备", 35, 175));
+    L.push_back(Person2("曹操", 45, 180));
+    L.push_back(Person2("关羽", 35, 200));
+    L.push_back(Person2("张飞", 35, 160));
+
+    for (list<Person2>::iterator it = L.begin(); it != L.end(); it++)
+    {
+        cout << it->mName << " " << it->mAge << " " << it->mHeight << endl;
+    }
+    cout << "=====排序后=====\n";
+    L.sort(ComparePerson);
+    for (list<Person2>::iterator it = L.begin(); it != L.end(); it++)
+    {
+        cout << it->mName << " " << it->mAge << " " << it->mHeight << endl;
+    }
+}
+
+//set容器
+void printSet(set<int> &s)
+{
+    for (set<int>::iterator it = s.begin(); it != s.end(); it++)
+    {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
+void test_set01()
+{
+    set<int> s;
+    s.insert(30);
+    s.insert(10);
+    s.insert(20);
+    s.insert(10); // 重复，set不会插入！考点
+    printSet(s); // 10 20 30
+
+    // 查找
+    set<int>::iterator pos = s.find(20);
+    if (pos != s.end())
+    {
+        cout << "找到：" << *pos << endl;
+    }
+
+    s.erase(s.begin());
+    printSet(s);
+}
+
+class MyCompareSet
+{
+public:
+    bool operator()(int v1, int v2) const
+    {
+        return v1 > v2;
+    }
+};
+
+void test_set_desc()
+{
+    set<int, MyCompareSet> s;
+    s.insert(10);
+    s.insert(40);
+    s.insert(20);
+    for (set<int, MyCompareSet>::iterator it = s.begin(); it != s.end(); it++)
+    {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
+
+void printMap(map<int, int> &m)
+{
+    for (map<int, int>::iterator it = m.begin(); it != m.end(); it++)
+    {
+        cout << "key:" << it->first << " value:" << it->second << endl;
+    }
+}
+
+void test_map01()
+{
+    map<int, int> m;
+    // 方式1 pair
+    m.insert(pair<int, int>(1, 10));
+    // 方式2 make_pair
+    m.insert(make_pair(3, 30));
+    // 方式3 [] 最常用
+    m[2] = 20;
+    printMap(m);
+
+    // 修改值
+    m[2] = 200;
+    printMap(m);
+
+    // 查找
+    map<int, int>::iterator pos = m.find(3);
+    if (pos != m.end())
+    {
+        cout << "找到 key=3 value=" << pos->second << endl;
+    }
+}
+
+void test_stack()
+{
+    stack<int> s;
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    while (!s.empty())
+    {
+        cout << "栈顶：" << s.top() << endl;
+        s.pop();
+    }
+    cout << "栈大小：" << s.size() << endl;
+}
+
+void test_queue()
+{
+    queue<int> q;
+    q.push(100);
+    q.push(200);
+    q.push(300);
+    while (!q.empty())
+    {
+        cout << "队头：" << q.front() << " 队尾：" << q.back() << endl;
+        q.pop();
+    }
+}
+
+void test_priority_queue()
+{
+    // 默认大顶堆
+    priority_queue<int> pq;
+    pq.push(10);
+    pq.push(30);
+    pq.push(20);
+    while (!pq.empty())
+    {
+        cout << pq.top() << " ";
+        pq.pop();
+    }
+    cout << endl;
+
+    // 小顶堆
+    priority_queue<int, vector<int>, greater<int>> pq2;
+    pq2.push(10);
+    pq2.push(30);
+    pq2.push(20);
+    while (!pq2.empty())
+    {
+        cout << pq2.top() << " ";
+        pq2.pop();
+    }
+    cout << endl;
+}
+
+void test_iterator()
+{
+    vector<int> v;
+    for (int i = 0; i < 5; i++)
+    {
+        v.push_back(i);
+    }
+    // 正向迭代器
+    vector<int>::iterator it;
+    for (it = v.begin(); it != v.end(); ++it)
+    {
+        cout << *it << " ";
+    }
+    cout << endl;
+
+    // 反向迭代器
+    vector<int>::reverse_iterator rit;
+    for (rit = v.rbegin(); rit != v.rend(); ++rit)
+    {
+        cout << *rit << " ";
+    }
+    cout << endl;
+
+    // auto 简化写法（推荐，现代C++）
+    for (auto &val : v)
+    {
+        val *= 2;
+    }
+    for (auto it = v.begin(); it != v.end(); ++it)
+    {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
+int main()
+{
+    test_vector01();
+    test_vector_person();
+    test_deque();
+    test_list01();
+    test_list_person_sort();
+    test_set01();
+    test_set_desc();
+    test_map01();
+    test_stack();
+    test_queue();
+    test_priority_queue();
+    test_iterator();
+    return 0;
+}
