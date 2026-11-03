@@ -1,0 +1,5 @@
+ros2 topic list        //列出所有话题
+ros2 topic list -t     //列出话题+消息类型（高频）
+ros2 topic info /xxx_topic   //查看话题
+
+ros2 pkg create 功能包 --build-type ament_cmake --dependencies rclcpp   //创建功能包
